@@ -5,7 +5,22 @@ plugins {
     id 'kotlin-kapt'
 }
 
-group "top.pressed"
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                //建议和github地址对应，否则对jitpack无效
+                groupId = "top.pressed"
+                //建议和github仓库名称对应，否则对jitpack无效
+                artifactId = 'quick-scaffold'
+                //建议和release的tag相同，否则对jitpack无效
+                version = '1.0.6'
+            }
+        }
+    }
+}
 
 android {
     compileSdk 31
