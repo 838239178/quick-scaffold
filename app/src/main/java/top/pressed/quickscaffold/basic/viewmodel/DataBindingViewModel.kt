@@ -1,32 +1,23 @@
-package top.pressed.quickscaffold.basic.viewmodel;
+package top.pressed.quickscaffold.basic.viewmodel
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.view.View;
+import android.content.Context
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
+import android.content.res.Resources.Theme
+import android.view.View
 
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModel;
+abstract class DataBindingViewModel<VB : ViewDataBinding> : ViewModel() {
+    var binding: VB? = null
+        private set
 
-public abstract class DataBindingViewModel<VB extends ViewDataBinding> extends ViewModel {
-    private VB binding;
-
-    public VB getBinding() {
-        return binding;
+    fun setBinding(binding: VB) {
+        this.binding = binding
     }
 
-    public void setBinding(VB binding) {
-        this.binding = binding;
-    }
-
-    public View getRoot() {
-        return binding.getRoot();
-    }
-
-    public Context getContext() {
-        return getRoot().getContext();
-    }
-
-    public Resources.Theme getTheme() {
-        return getContext().getTheme();
-    }
+    val root: View
+        get() = binding!!.root
+    val context: Context
+        get() = root.context
+    val theme: Theme
+        get() = context.theme
 }

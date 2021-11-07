@@ -1,76 +1,61 @@
-package top.pressed.quickscaffold.basic.fragment;
+package top.pressed.quickscaffold.basic.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import top.pressed.quickscaffold.basic.viewmodel.DataBindingViewModel
+import top.pressed.quickscaffold.basic.DataInitializer
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
+    private val layoutId: Int,
+    private val vmId: Int,
+    private val vmClass: Class<VM>
+) : Fragment() {
+    protected lateinit var binding: VB
+    protected lateinit var viewModel: VM
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
-import top.pressed.quickscaffold.basic.DataInitializer;
-import top.pressed.quickscaffold.basic.viewmodel.DataBindingViewModel;
-
-
-public class DataBindingFragment<VB extends ViewDataBinding, VM extends ViewModel> extends Fragment {
-    private final int layoutId;
-    private final int vmId;
-    private final Class<VM> vmClass;
-    private VB binding;
-    protected VM viewModel;
-
-    public DataBindingFragment(int layoutId, int vmId, Class<VM> vmClass) {
-        this.layoutId = layoutId;
-        this.vmId = vmId;
-        this.vmClass = vmClass;
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this)[vmClass]
     }
 
-    private void initViewModel() {
-        viewModel = new ViewModelProvider(this).get(vmClass);
+    private fun initDataBinding(inflater: LayoutInflater, container: ViewGroup?) {
+        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding.lifecycleOwner = this
     }
 
-    private void initDataBinding(LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false);
-        binding.setLifecycleOwner(this);
-    }
-
-    private void viewCreated(Bundle savedInstanceState) {
-        if (viewModel instanceof DataBindingViewModel) {
-            ((DataBindingViewModel) viewModel).setBinding(binding);
+    private fun viewCreated(savedInstanceState: Bundle?) {
+        if (viewModel is DataBindingViewModel<*>) {
+            (viewModel as DataBindingViewModel<VB>).setBinding(binding)
         }
-        if (viewModel instanceof DataInitializer) {
-            ((DataInitializer) viewModel).attach(savedInstanceState);
+        if (viewModel is DataInitializer) {
+            (viewModel as DataInitializer).attach(savedInstanceState)
         }
-        binding.setVariable(vmId, viewModel);
+        binding.setVariable(vmId, viewModel)
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initViewModel();
-        initDataBinding(inflater,container);
-        afterInit(savedInstanceState);
-        return super.onCreateView(inflater, container, savedInstanceState);
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        initViewModel()
+        initDataBinding(inflater, container)
+        afterInit(savedInstanceState)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        viewCreated(savedInstanceState);
-        afterViewCreated(savedInstanceState);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewCreated(savedInstanceState)
+        afterViewCreated(savedInstanceState)
     }
 
-    protected void afterInit(Bundle savedInstanceState) {
-
-    }
-
-    protected void afterViewCreated(Bundle savedInstanceState) {
-
-    }
+    protected fun afterInit(savedInstanceState: Bundle?) {}
+    protected fun afterViewCreated(savedInstanceState: Bundle?) {}
 }

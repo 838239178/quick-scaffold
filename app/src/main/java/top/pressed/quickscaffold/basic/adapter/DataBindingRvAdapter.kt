@@ -1,98 +1,82 @@
-package top.pressed.quickscaffold.basic.adapter;
-
-import android.annotation.SuppressLint;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
-
-import top.pressed.quickscaffold.basic.DataBinder;
-import top.pressed.quickscaffold.basic.viewmodel.DataBindingViewModel;
+package top.pressed.quickscaffold.basic.adapter
 
 
-public class DataBindingRvAdapter<ItemDataType> extends RecyclerView.Adapter<DataBindingRvAdapter.ViewHolder> {
-    private final int itemLayoutId;
-    private int itemVmId = -1;
-    private DataBinder<ItemDataType> binder;
-    private LifecycleOwner outerLifeCycleOwner;
+import androidx.recyclerview.widget.RecyclerView
+import top.pressed.quickscaffold.basic.DataBinder
+import androidx.lifecycle.LifecycleOwner
+import android.view.ViewGroup
+import android.view.LayoutInflater
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.DataBindingUtil
+import top.pressed.quickscaffold.basic.viewmodel.DataBindingViewModel
+import top.pressed.quickscaffold.basic.adapter.DataBindingRvAdapter
+import android.annotation.SuppressLint
 
-    private List<ItemDataType> data;
+open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
+    RecyclerView.Adapter<DataBindingRvAdapter.ViewHolder>() {
 
-    public DataBindingRvAdapter(int itemLayoutId) {
-        super();
-        this.itemLayoutId = itemLayoutId;
-    }
+    private var itemVmId = -1
+    private var binder: DataBinder<ItemDataType>? = null
+    private var outerLifeCycleOwner: LifecycleOwner? = null
+    private var data: List<ItemDataType>? = null
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ViewDataBinding vb = DataBindingUtil.inflate(inflater, itemLayoutId, parent, false);
-        if(outerLifeCycleOwner != null) {
-            vb.setLifecycleOwner(outerLifeCycleOwner);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val vb = DataBindingUtil.inflate<ViewDataBinding>(inflater, itemLayoutId, parent, false)
+        outerLifeCycleOwner.let {
+            vb.lifecycleOwner = it
         }
-        if (binder != null && itemVmId != -1) {
-            vb.setVariable(itemVmId, binder);
-        }
-        return new ViewHolder(vb);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (binder != null) {
-            if (binder instanceof DataBindingViewModel) {
-                ((DataBindingViewModel) binder).setBinding(holder.binding);
+        binder.let {
+            if (itemVmId != -1) {
+                vb.setVariable(itemVmId, it)
             }
-            binder.onBind(data.get(position));
+        }
+        return ViewHolder(vb)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (binder != null) {
+            if (binder is DataBindingViewModel<*>) {
+                (binder as DataBindingViewModel<ViewDataBinding>).setBinding(holder.binding)
+            }
+            binder!!.onBind(data!![position])
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return data == null ? 0 : data.size();
+    override fun getItemCount(): Int {
+        return if (data == null) 0 else data!!.size
     }
 
-    public DataBindingRvAdapter<ItemDataType> setItemVmId(int itemVmId) {
-        this.itemVmId = itemVmId;
-        return this;
+    fun setItemVmId(itemVmId: Int): DataBindingRvAdapter<ItemDataType> {
+        this.itemVmId = itemVmId
+        return this
     }
 
-    public DataBindingRvAdapter<ItemDataType> setOuterLifeCycleOwner(LifecycleOwner outerLifeCycleOwner) {
-        this.outerLifeCycleOwner = outerLifeCycleOwner;
-        return this;
+    fun setOuterLifeCycleOwner(outerLifeCycleOwner: LifecycleOwner?): DataBindingRvAdapter<ItemDataType> {
+        this.outerLifeCycleOwner = outerLifeCycleOwner
+        return this
     }
 
-    public DataBindingRvAdapter<ItemDataType> setBinder(DataBinder<ItemDataType> binder) {
-        this.binder = binder;
-        return this;
+    fun setBinder(binder: DataBinder<ItemDataType>?): DataBindingRvAdapter<ItemDataType> {
+        this.binder = binder
+        return this
     }
 
-    public List<ItemDataType> getData() {
-        return data;
+    fun getData(): List<ItemDataType>? {
+        return data
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<ItemDataType> data) {
+    fun setData(data: List<ItemDataType>?) {
         if (this.data != null) {
-            this.data = data;
-            notifyDataSetChanged();
+            this.data = data
+            notifyDataSetChanged()
         } else {
-            this.data = data;
+            this.data = data
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        ViewDataBinding binding;
-        public ViewHolder(ViewDataBinding binding) {
-            super(binding.getRoot());
-        }
+    class ViewHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+        lateinit var binding: ViewDataBinding
     }
-
 }

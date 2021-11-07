@@ -1,7 +1,7 @@
-package top.pressed.quickscaffold.basic;
+package top.pressed.quickscaffold.basic
 
-import android.os.Bundle;
+import android.os.Bundle
 
-public interface DataInitializer {
-    void attach(Bundle savedInstanceState);
+interface DataInitializer {
+    fun attach(savedInstanceState: Bundle?)
 }
