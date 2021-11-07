@@ -7,4 +7,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "quick-scaffold"
-include ':app'
+//include ':app'
+include ':core'

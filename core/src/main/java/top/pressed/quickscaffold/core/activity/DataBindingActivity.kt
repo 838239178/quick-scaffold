@@ -1,4 +1,4 @@
-package top.pressed.quickscaffold.activity
+package top.pressed.quickscaffold.core.activity
 
 
 import androidx.databinding.ViewDataBinding
@@ -7,8 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import top.pressed.quickscaffold.viewmodel.DataBindingViewModel
-import top.pressed.quickscaffold.DataInitializer
+
+import top.pressed.quickscaffold.core.DataInitializer
+import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
 open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
     private val layoutId: Int,

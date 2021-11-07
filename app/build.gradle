@@ -1,93 +1,44 @@
 plugins {
-    id 'com.android.library'
-    id 'maven-publish'
+    id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                //建议和github地址对应，否则对jitpack无效
-                groupId = "top.pressed"
-                //建议和github仓库名称对应，否则对jitpack无效
-                artifactId = 'quick-scaffold'
-                //建议和release的tag相同，否则对jitpack无效
-                version = 'lastest'
-            }
-        }
-    }
 }
 
 android {
     compileSdk 31
-    compileSdkVersion 31
-    buildToolsVersion '31.0.0'
 
     defaultConfig {
+        applicationId "top.pressed.quickscaffold"
         minSdk 21
         targetSdk 31
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        resourcePrefix "quick_scaffold_"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
-            debuggable false
-            jniDebuggable false
-            minifyEnabled true
-            zipAlignEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildFeatures {
-        dataBinding true
-    }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    kapt {
-        useBuildCache = true
-        javacOptions {
-            option("-Xmaxerrs", 500)
-        }
-    }
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 }
 
-var version = [
-        lifecycle: "2.2.0",
-        corektx: "1.3.2",
-        appcompat: "1.2.0",
-        material: "1.3.0",
-        kotlinx: "1.5.1"
-]
-
 dependencies {
-    compileOnly fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    //kotlin
-    api "androidx.core:core-ktx:${version.corektx}"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.kotlinx}"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version.kotlinx}"
-    //android basic
-    api "androidx.appcompat:appcompat:${version.appcompat}"
-    api "com.google.android.material:material:${version.material}"
-    //lifecycle
-    api "androidx.lifecycle:lifecycle-extensions:${version.lifecycle}"
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.lifecycle}"
-    api "androidx.lifecycle:lifecycle-runtime-ktx:${version.lifecycle}"
-
-    testImplementation 'junit:junit:4.13.2'
+    implementation project(":core")
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

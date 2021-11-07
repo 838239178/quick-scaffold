@@ -1,4 +1,4 @@
-package top.pressed.quickscaffold.fragment
+package top.pressed.quickscaffold.core.fragment
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -9,8 +9,9 @@ import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import top.pressed.quickscaffold.viewmodel.DataBindingViewModel
-import top.pressed.quickscaffold.DataInitializer
+
+import top.pressed.quickscaffold.core.DataInitializer
+import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
 open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
     private val layoutId: Int,

@@ -1,4 +1,4 @@
-package top.pressed.quickscaffold.viewmodel
+package top.pressed.quickscaffold.core.viewmodel
 
 import android.content.Context
 import androidx.databinding.ViewDataBinding

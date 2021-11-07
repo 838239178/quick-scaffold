@@ -1,15 +1,16 @@
-package top.pressed.quickscaffold.adapter
+package top.pressed.quickscaffold.core.adapter
 
 
-import androidx.recyclerview.widget.RecyclerView
-import top.pressed.quickscaffold.DataBinder
+
 import androidx.lifecycle.LifecycleOwner
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import androidx.databinding.ViewDataBinding
 import androidx.databinding.DataBindingUtil
-import top.pressed.quickscaffold.viewmodel.DataBindingViewModel
 import android.annotation.SuppressLint
+import androidx.recyclerview.widget.RecyclerView
+import top.pressed.quickscaffold.core.DataBinder
+import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
 open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
     RecyclerView.Adapter<DataBindingRvAdapter.ViewHolder>() {
