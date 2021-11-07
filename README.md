@@ -10,10 +10,10 @@
 
     ```gradle
     allprojects {
-      repositories {
-        ...
-        maven { url 'https://jitpack.io' }
-      }
+        repositories {
+            ...
+            maven { url 'https://jitpack.io' }
+        }
     }
     ```
 
@@ -21,6 +21,6 @@
 
     ```gradle
     dependencies {
-            implementation 'top.pressed:quick-scaffold:Tag'
+        implementation 'top.pressed:quick-scaffold:Tag'
     }
     ```
