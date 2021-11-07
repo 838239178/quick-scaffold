@@ -1,2 +1,4 @@
 jdk:
   - openjdk11
+kotlin:
+  - 1.5.31
