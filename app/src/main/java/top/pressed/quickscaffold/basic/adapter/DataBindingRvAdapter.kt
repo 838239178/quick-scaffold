@@ -15,7 +15,7 @@ import android.annotation.SuppressLint
 open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
     RecyclerView.Adapter<DataBindingRvAdapter.ViewHolder>() {
 
-    private var itemVmId = -1
+    private var itemVmId: Int? = null
     private var binder: DataBinder<ItemDataType>? = null
     private var outerLifeCycleOwner: LifecycleOwner? = null
     private var data: List<ItemDataType>? = null
@@ -23,28 +23,24 @@ open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val vb = DataBindingUtil.inflate<ViewDataBinding>(inflater, itemLayoutId, parent, false)
-        outerLifeCycleOwner.let {
-            vb.lifecycleOwner = it
-        }
-        binder.let {
-            if (itemVmId != -1) {
-                vb.setVariable(itemVmId, it)
-            }
+        vb.lifecycleOwner = outerLifeCycleOwner
+        itemVmId?.let {
+            vb.setVariable(it, binder)
         }
         return ViewHolder(vb)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (binder != null) {
-            if (binder is DataBindingViewModel<*>) {
-                (binder as DataBindingViewModel<ViewDataBinding>).setBinding(holder.binding)
+        binder?.let {
+            if (it is DataBindingViewModel<*>) {
+                (it as DataBindingViewModel<ViewDataBinding>).setBinding(holder.binding)
             }
-            binder!!.onBind(data!![position])
+            it.onBind(data!![position])
         }
     }
 
     override fun getItemCount(): Int {
-        return if (data == null) 0 else data!!.size
+        return data?.size ?: 0
     }
 
     fun setItemVmId(itemVmId: Int): DataBindingRvAdapter<ItemDataType> {
