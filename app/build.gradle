@@ -14,11 +14,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resourcePrefix "quick_scaffold_"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
+            debuggable false
+            jniDebuggable false
             minifyEnabled false
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -26,12 +31,20 @@ android {
         dataBinding true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
+    kapt {
+        useBuildCache = true
+        javacOptions {
+            option("-Xmaxerrs", 500)
+        }
+    }
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 }
 
 var version = [
@@ -43,6 +56,7 @@ var version = [
 ]
 
 dependencies {
+    compileOnly fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     //kotlin
     api "androidx.core:core-ktx:${version.corektx}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${version.kotlinx}"
@@ -55,7 +69,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:${version.lifecycle}"
     api "androidx.lifecycle:lifecycle-runtime-ktx:${version.lifecycle}"
 
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

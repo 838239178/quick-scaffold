@@ -2,6 +2,9 @@
 buildscript {
     ext.kotlin_version = "1.5.31"
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
         google()
         mavenCentral()
     }
@@ -13,7 +16,17 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+allprojects {
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven { url "https://jitpack.io" }
+        google()
+        mavenCentral()
+        flatDir { dirs 'libs' }
+    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
