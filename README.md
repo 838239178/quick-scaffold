@@ -1,6 +1,6 @@
 # QuickScaffold
 
-[![](https://jitpack.io/v/top.pressed/QuickScaffold.svg)](https://jitpack.io/#top.pressed/QuickScaffold)
+[![](https://jitpack.io/v/top.pressed/quick-scaffold.svg)](https://jitpack.io/#top.pressed/quick-scaffold)
 
 ## Installation
 
@@ -21,6 +21,6 @@ Step 2. Add the dependency
 
 ```gradle
 dependencies {
-    implementation 'top.pressed:QuickScaffold:Tag'
+    implementation 'top.pressed:quick-scaffold:1.0.5'
 }
 ```
