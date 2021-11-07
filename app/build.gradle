@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-kapt'
 }
 
+group "top.pressed"
+
 android {
     compileSdk 31
     compileSdkVersion 31
