@@ -1,4 +1,4 @@
-package top.pressed.quickscaffold.basic
+package top.pressed.quickscaffold
 
 interface DataBinder<DataType> {
     fun onBind(item: DataType)

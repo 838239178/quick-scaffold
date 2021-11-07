@@ -1,4 +1,4 @@
-package top.pressed.quickscaffold.basic
+package top.pressed.quickscaffold
 
 import android.os.Bundle
 
