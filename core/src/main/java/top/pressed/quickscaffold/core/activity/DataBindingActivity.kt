@@ -20,6 +20,10 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
     protected open lateinit var viewModel: VM
     protected open lateinit var binding: VB
 
+    init {
+        initViewModel()
+    }
+
     /**
      * create ViewModel
      */
@@ -42,6 +46,7 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
      * 2. invoke view model data initialize
      */
     private fun doCreate(savedInstanceState: Bundle?) {
+        initDataBinding()
         if (viewModel is DataBindingViewModel<*>) {
             (viewModel as DataBindingViewModel<VB>).setBinding(binding)
         }
@@ -53,20 +58,18 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initViewModel()
-        initDataBinding()
         preCreate(savedInstanceState)
         doCreate(savedInstanceState)
         postCreate(savedInstanceState)
     }
 
     /**
-     * after init view model and data binding
+     * after init view model
      */
     protected open fun preCreate(savedInstanceState: Bundle?) {}
 
     /**
-     * after view model data initialize
+     * after init data binding and view model data initialize
      */
     protected open fun postCreate(savedInstanceState: Bundle?) {}
 }

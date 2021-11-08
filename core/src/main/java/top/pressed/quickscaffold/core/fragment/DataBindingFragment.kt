@@ -22,6 +22,10 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
     protected open lateinit var binding: VB
     protected open lateinit var viewModel: VM
 
+    init {
+        initViewModel()
+    }
+
     private fun initViewModel() {
         viewModel = ViewModelProvider(this)[vmClass]
     }
@@ -31,7 +35,12 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
         binding.lifecycleOwner = this
     }
 
-    private fun viewCreated(savedInstanceState: Bundle?) {
+    private fun createView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) {
+        initDataBinding(inflater, container)
         if (viewModel is DataBindingViewModel<*>) {
             (viewModel as DataBindingViewModel<VB>).setBinding(binding)
         }
@@ -46,18 +55,19 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initViewModel()
-        initDataBinding(inflater, container)
-        afterInit(savedInstanceState)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        preCreateView(savedInstanceState)
+        createView(inflater, container, savedInstanceState)
+        postCreateView(savedInstanceState)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewCreated(savedInstanceState)
-        afterViewCreated(savedInstanceState)
-    }
+    /**
+     * after view model created
+     */
+    protected open fun preCreateView(savedInstanceState: Bundle?) {}
 
-    protected open fun afterInit(savedInstanceState: Bundle?) {}
-    protected open fun afterViewCreated(savedInstanceState: Bundle?) {}
+    /**
+     * after init data binding and view model data initialize
+     */
+    protected open fun postCreateView(savedInstanceState: Bundle?) {}
 }
