@@ -70,8 +70,9 @@ var versions = [
 dependencies {
     compileOnly fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     //startup
-    implementation 'io.github.idisfkj:android-startup:1.0.7'
+    api 'io.github.idisfkj:android-startup:1.0.7'
     //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.31"
     api "androidx.core:core-ktx:${versions.corektx}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinx}"
