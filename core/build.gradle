@@ -12,7 +12,7 @@ android {
         minSdk 21
         targetSdk 31
         versionCode 18
-        versionName ${rootProject.ext.versionName}
+        versionName "1.0.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resourcePrefix "quick_scaffold_"
@@ -68,6 +68,8 @@ var versions = [
 
 dependencies {
     compileOnly fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    //startup
+    implementation 'io.github.idisfkj:android-startup:1.0.7'
     //kotlin
     api "androidx.core:core-ktx:${versions.corektx}"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx}"
@@ -88,7 +90,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'top.pressed'
                 artifactId = 'quick-scaffold'
-                version = ${rootProject.ext.versionName}
+                version = '1.0.8'
             }
         }
     }

@@ -13,29 +13,23 @@ import top.pressed.quickscaffold.core.DataBinder
 import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
 open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
-    RecyclerView.Adapter<DataBindingRvAdapter.ViewHolder>() {
+    RecyclerView.Adapter<DataBindingRvAdapter.ViewHolder<ItemDataType>>() {
 
     private var itemVmId: Int? = null
     private var binder: DataBinder<ItemDataType>? = null
     private var outerLifeCycleOwner: LifecycleOwner? = null
-    private var data: List<ItemDataType>? = null
+    private var data: MutableList<ItemDataType>? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<ItemDataType> {
         val inflater = LayoutInflater.from(parent.context)
         val vb = DataBindingUtil.inflate<ViewDataBinding>(inflater, itemLayoutId, parent, false)
         vb.lifecycleOwner = outerLifeCycleOwner
-        itemVmId?.let {
-            vb.setVariable(it, binder)
-        }
-        return ViewHolder(vb)
+        return ViewHolder<ItemDataType>(vb, itemVmId)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<ItemDataType>, position: Int) {
         binder?.let {
-            if (it is DataBindingViewModel<*>) {
-                (it as DataBindingViewModel<ViewDataBinding>).setBinding(holder.binding)
-            }
-            it.onBind(data!![position])
+            holder.bind(it, data!![position])
         }
     }
 
@@ -43,7 +37,7 @@ open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
         return data?.size ?: 0
     }
 
-    fun setItemVmId(itemVmId: Int): DataBindingRvAdapter<ItemDataType> {
+    fun setItemVmId(itemVmId: Int?): DataBindingRvAdapter<ItemDataType> {
         this.itemVmId = itemVmId
         return this
     }
@@ -63,7 +57,7 @@ open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<ItemDataType>?) {
+    fun setData(data: MutableList<ItemDataType>?) {
         if (this.data != null) {
             this.data = data
             notifyDataSetChanged()
@@ -72,7 +66,42 @@ open class DataBindingRvAdapter<ItemDataType>(private val itemLayoutId: Int) :
         }
     }
 
-    class ViewHolder(binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        lateinit var binding: ViewDataBinding
+    fun addItem(item: ItemDataType) {
+        this.data?.let {
+            it.add(item)
+            notifyItemInserted(it.size - 1)
+        }
+    }
+
+    fun addItems(items: List<ItemDataType>) {
+        this.data?.let {
+            val start = it.size
+            it.addAll(items)
+            notifyItemRangeInserted(start, items.size)
+        }
+    }
+
+    fun setItem(idx: Int, item: ItemDataType) {
+        idx.takeIf {
+            idx < itemCount
+        }?.let {
+           this.data?.let { dt->
+               dt[idx] = item
+               notifyItemChanged(idx)
+           }
+        }
+    }
+
+    open class ViewHolder<T>(var binding: ViewDataBinding, var bindId: Int?) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(binder: DataBinder<T>, data: T) {
+            if (binder is DataBindingViewModel<*>) {
+                (binder as DataBindingViewModel<ViewDataBinding>).setBinding(binding)
+            }
+            bindId?.let {
+                binding.setVariable(it, binder)
+            }
+            binder.onBind(data)
+        }
     }
 }

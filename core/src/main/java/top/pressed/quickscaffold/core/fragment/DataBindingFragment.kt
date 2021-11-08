@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
 import top.pressed.quickscaffold.core.DataInitializer
 import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
 open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
-    private val layoutId: Int,
+    @LayoutRes private val layoutId: Int,
     private val vmId: Int,
     private val vmClass: Class<VM>
 ) : Fragment() {

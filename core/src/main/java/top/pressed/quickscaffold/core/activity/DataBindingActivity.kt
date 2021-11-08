@@ -7,12 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
+import androidx.annotation.LayoutRes
 
 import top.pressed.quickscaffold.core.DataInitializer
 import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
 open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
-    private val layoutId: Int,
+    @LayoutRes private val layoutId: Int,
     private val vmId: Int,
     private val vmClass: Class<VM>
 ) : AppCompatActivity() {
