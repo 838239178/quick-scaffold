@@ -19,8 +19,8 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
     private val vmId: Int,
     private val vmClass: Class<VM>
 ) : Fragment() {
-    protected lateinit var binding: VB
-    protected lateinit var viewModel: VM
+    protected open lateinit var binding: VB
+    protected open lateinit var viewModel: VM
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this)[vmClass]
@@ -58,6 +58,6 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
         afterViewCreated(savedInstanceState)
     }
 
-    protected fun afterInit(savedInstanceState: Bundle?) {}
-    protected fun afterViewCreated(savedInstanceState: Bundle?) {}
+    protected open fun afterInit(savedInstanceState: Bundle?) {}
+    protected open fun afterViewCreated(savedInstanceState: Bundle?) {}
 }

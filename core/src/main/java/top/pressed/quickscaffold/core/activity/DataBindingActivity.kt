@@ -17,8 +17,8 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
     private val vmId: Int,
     private val vmClass: Class<VM>
 ) : AppCompatActivity() {
-    protected lateinit var viewModel: VM
-    protected lateinit var binding: VB
+    protected open lateinit var viewModel: VM
+    protected open lateinit var binding: VB
 
     /**
      * create ViewModel
@@ -60,6 +60,13 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
         postCreate(savedInstanceState)
     }
 
-    protected fun preCreate(savedInstanceState: Bundle?) {}
-    protected fun postCreate(savedInstanceState: Bundle?) {}
+    /**
+     * after init view model and data binding
+     */
+    protected open fun preCreate(savedInstanceState: Bundle?) {}
+
+    /**
+     * after view model data initialize
+     */
+    protected open fun postCreate(savedInstanceState: Bundle?) {}
 }
