@@ -20,9 +20,6 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
     protected open lateinit var viewModel: VM
     protected open lateinit var binding: VB
 
-    init {
-        initViewModel()
-    }
 
     /**
      * create ViewModel
@@ -46,6 +43,7 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
      * 2. invoke view model data initialize
      */
     private fun doCreate(savedInstanceState: Bundle?) {
+        initViewModel()
         initDataBinding()
         if (viewModel is DataBindingViewModel<*>) {
             (viewModel as DataBindingViewModel<VB>).setBinding(binding)

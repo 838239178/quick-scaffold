@@ -22,9 +22,6 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
     protected open lateinit var binding: VB
     protected open lateinit var viewModel: VM
 
-    init {
-        initViewModel()
-    }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this)[vmClass]
@@ -40,6 +37,7 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) {
+        initViewModel()
         initDataBinding(inflater, container)
         if (viewModel is DataBindingViewModel<*>) {
             (viewModel as DataBindingViewModel<VB>).setBinding(binding)
