@@ -6,13 +6,13 @@ import com.rousetime.android_startup.AndroidStartup
 import top.pressed.quickscaffold.util.ApplicationUtils
 import top.pressed.quickscaffold.util.UiUtils
 
-class ScaffoldStartUp: AndroidStartup<Void>() {
+class ScaffoldStartUp: AndroidStartup<Unit>() {
 
     override fun callCreateOnMainThread(): Boolean = true
 
     override fun waitOnMainThread(): Boolean = true
 
-    override fun create(context: Context): Void? {
+    override fun create(context: Context): Unit? {
         (context as? Application)?.let {
             ApplicationUtils.init(it)
         }
