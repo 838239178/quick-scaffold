@@ -69,6 +69,7 @@ var versions = [
 
 dependencies {
     compileOnly fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'com.drakeet.multitype:multitype:4.3.0'
     //startup
     api 'io.github.idisfkj:android-startup:1.0.7'
     //kotlin

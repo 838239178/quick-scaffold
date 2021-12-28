@@ -1,7 +1,6 @@
 package top.pressed.quickscaffold.core.fragment
 
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,11 +9,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-
 import top.pressed.quickscaffold.core.DataInitializer
 import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
-open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
+open class DataBindingFragment<VB : ViewDataBinding, VM : DataBindingViewModel<VB>>(
     @LayoutRes private val layoutId: Int,
     private val vmId: Int,
     private val vmClass: Class<VM>
@@ -39,9 +37,7 @@ open class DataBindingFragment<VB : ViewDataBinding, VM : ViewModel>(
     ) {
         initViewModel()
         initDataBinding(inflater, container)
-        if (viewModel is DataBindingViewModel<*>) {
-            (viewModel as DataBindingViewModel<VB>).setBinding(binding)
-        }
+        viewModel.setBinding(binding)
         if (viewModel is DataInitializer) {
             (viewModel as DataInitializer).attach(savedInstanceState)
         }

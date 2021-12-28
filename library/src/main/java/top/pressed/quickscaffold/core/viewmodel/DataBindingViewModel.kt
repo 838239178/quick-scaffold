@@ -1,12 +1,13 @@
 package top.pressed.quickscaffold.core.viewmodel
 
 import android.content.Context
+import android.content.res.Resources
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
-import android.content.res.Resources.Theme
-import android.view.View
+import top.pressed.quickscaffold.core.DataInitializer
 
-abstract class DataBindingViewModel<VB : ViewDataBinding> : ViewModel() {
+abstract class DataBindingViewModel<VB: ViewDataBinding>: ViewModel() {
     var binding: VB? = null
         private set
 
@@ -14,10 +15,10 @@ abstract class DataBindingViewModel<VB : ViewDataBinding> : ViewModel() {
         this.binding = binding
     }
 
-    val root: View
+    private val root: View
         get() = binding!!.root
-    val context: Context
+    private val context: Context
         get() = root.context
-    val theme: Theme
+    val theme: Resources.Theme
         get() = context.theme
 }

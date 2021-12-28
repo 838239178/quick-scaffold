@@ -2,17 +2,15 @@ package top.pressed.quickscaffold.core.activity
 
 
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import androidx.annotation.LayoutRes
-
 import top.pressed.quickscaffold.core.DataInitializer
 import top.pressed.quickscaffold.core.viewmodel.DataBindingViewModel
 
-open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
+open class DataBindingActivity<VB : ViewDataBinding, VM : DataBindingViewModel<VB>>(
     @LayoutRes private val layoutId: Int,
     private val vmId: Int,
     private val vmClass: Class<VM>
@@ -45,9 +43,7 @@ open class DataBindingActivity<VB : ViewDataBinding, VM : ViewModel>(
     private fun doCreate(savedInstanceState: Bundle?) {
         initViewModel()
         initDataBinding()
-        if (viewModel is DataBindingViewModel<*>) {
-            (viewModel as DataBindingViewModel<VB>).setBinding(binding)
-        }
+        viewModel.setBinding(binding)
         if (viewModel is DataInitializer) {
             (viewModel as DataInitializer).attach(savedInstanceState)
         }
